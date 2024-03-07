@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from 'express'
 import mongoose from "mongoose";
 import router from "./routes/employeeRoutes";
 import dotenv from "dotenv";
@@ -26,25 +26,25 @@ mongoose
     process.exit(1);
   });
 
+app.get("/", (req: Request, res: Response) => {
+  try {
+    res.json({
+      msg: "It's workin'!",
+    });
+  } catch (x) {
+    console.error(x);
+    res.json({ error: x });
+  }
+});
+
 app.use("/", router);
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`server running on http://localhost:${PORT}`);
 });
-
-function stringify(obj: any) {
-  let cache: any[] = [];
-  let str = JSON.stringify(obj, function (key, value) {
-    if (typeof value === "object" && value !== null) {
-      if (cache.indexOf(value) !== -1) {
-        // Circular reference found, discard key
-        return;
-      }
-      // Store value in our collection
-      cache.push(value);
-    }
-    return value;
-  });
-  cache = null; // reset the cache
-  return str;
-}

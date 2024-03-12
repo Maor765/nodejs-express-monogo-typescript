@@ -23,10 +23,18 @@ export class EmployeeController {
 
   createEmployee = async (req: express.Request, res: express.Response) => {
     try {
-      const { name, email, mobile, dob, doj } = req.body;
-      const employee = await new EmployeeModel({ name, email, mobile, dob, doj });
+      const employee = await new EmployeeModel(req.body);
       await employee.save();
       return res.status(200).json({ message: "Employee created" });
+    } catch (error) {
+      return res.status(400);
+    }
+  };
+
+  createMultipleEmployee = async (req: express.Request, res: express.Response) => {
+    try {
+      await EmployeeModel.insertMany(req.body);
+      return res.status(200).json({ message: "Employees created" });
     } catch (error) {
       return res.status(400);
     }

@@ -33,7 +33,7 @@ mongoose
 app.get("/", (req: Request, res: Response) => {
   try {
     res.json({
-      msg: "It's workin'!",
+      msg: "It's working!",
     });
   } catch (x) {
     console.error(x);
@@ -41,11 +41,6 @@ app.get("/", (req: Request, res: Response) => {
   }
 });
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 app.use("/", router);
 
 
